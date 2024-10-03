@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+echo isort...
+isort . --overwrite-in-place

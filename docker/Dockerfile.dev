@@ -1,0 +1,36 @@
+FROM python:3.12.3-slim
+
+ENV PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100 \
+  # poetry
+  POETRY_VERSION=1.8.3 \
+  POETRY_NO_INTERACTION=1 \
+  POETRY_VIRTUALENVS_CREATE=false \
+  POETRY_CACHE_DIR='/var/cache/pypoetry' \
+  POETRY_HOME='/usr/local'
+
+RUN apt-get update && apt-get install -y \
+  gcc \
+  g++ \
+  python3-dev \
+  libpq-dev \
+  libxml2-dev \
+  libxslt-dev \
+  netcat-traditional \
+  wait-for-it \
+  curl \
+  && pip install "poetry==$POETRY_VERSION" \
+  && poetry --version \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY src /app
+
+WORKDIR /app
+
+RUN poetry install --no-interaction --no-ansi -vvv
+
+CMD ["sanic", "app.app", "--host=0.0.0.0", "--port=8000", "--debug", "--auto-reload"]

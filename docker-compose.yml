@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/app
+    env_file:
+      - envs/.env
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - 6333:6333
+    volumes:
+      - ./qdrant_data:/qdrant/storage
