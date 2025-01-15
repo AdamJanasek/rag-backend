@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Prompts(Enum):
-    SIROCCO_BOT = 'Hi, I am your AI assistant. How can I help you today?'
+    BOT = 'Hi, I am your AI assistant. How can I help you today?'
     SEARCH = 'Based on your knowledge answer factually asked question in given language.'
     RAG_SEARCH = ' '.join([
         'Based on your knowledge and doc text, answer factually asked question in given language.',
